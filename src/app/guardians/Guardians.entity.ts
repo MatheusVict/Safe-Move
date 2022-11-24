@@ -17,8 +17,8 @@ export class GuardiansEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text', name: 'user_name' })
-  userName: string;
+  @Column({ type: 'text', name: 'guardian_name' })
+  guardianName: string;
 
   @Column()
   email: string;
