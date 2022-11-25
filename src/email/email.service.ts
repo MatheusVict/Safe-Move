@@ -10,13 +10,13 @@ export class EmailService {
       port: 465,
       secure: true,
       auth: {
-        user: 'matheusvictorhenrique@gmail.com',
-        pass: 'ttwmajspleekkald',
+        user: process.env.EMAIL_FROM,
+        pass: process.env.PASS_MAIL,
       },
     });
 
     await trasport.sendMail({
-      from: 'Safe Move <matheusvictorhenrique@gmail.com>',
+      from: `Safe Move <${process.env.EMAIL_FROM}>`,
       to: `${email.to}`,
       subject: `${email.subject}`,
       html: `<h1>Olá guardião</h1> <p>${email.message}</p>`,
