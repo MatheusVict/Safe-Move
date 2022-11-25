@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
 import { UserEntity } from './User.entity';
@@ -34,16 +34,16 @@ export class UserService {
     return withoutPass;
   }
 
-  async getOne(id: number) {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      select: ['id', 'email', 'userName'],
-      relations: { guardians: true },
-    });
+  async getOne(options: FindOneOptions<UserEntity>) {
+    try {
+      const user = await this.userRepository.findOneOrFail(options);
 
-    if (!user) throw new NotFoundException();
+      if (!user) throw new NotFoundException();
 
-    return user;
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async update(id: number, data: UpdateUserDTO) {

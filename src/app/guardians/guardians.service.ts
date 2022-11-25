@@ -31,19 +31,15 @@ export class GuardiansService {
   }
 
   async getOneGuardian(id: number) {
-    try {
-      const guardian = await this.guardiansRepository.findOneOrFail({
-        where: { id },
-        select: ['id', 'email', 'guardianName'],
-        relations: { user: true },
-      });
+    const guardian = await this.guardiansRepository.findOne({
+      where: { id },
+      select: ['id', 'email', 'guardianName'],
+      relations: { user: true },
+    });
 
-      if (!guardian) throw new NotFoundException();
+    if (!guardian) throw new NotFoundException();
 
-      return guardian;
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
+    return guardian;
   }
 
   async create(data: CreateGuardiansDTO) {

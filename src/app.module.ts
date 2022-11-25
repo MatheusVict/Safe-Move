@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './app/user/user.module';
 import { GuardiansModule } from './app/guardians/guardians.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { GuardiansModule } from './app/guardians/guardians.module';
     } as TypeOrmModuleOptions),
     UserModule,
     GuardiansModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -8,12 +8,16 @@ import {
   Param,
   Post,
   Put,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
 @Controller('users')
+@UseGuards(AuthGuard('jwt'))
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -29,7 +33,11 @@ export class UserController {
 
   @Get(':id')
   async findById(@Param('id') id: number) {
-    return this.userService.getOne(id);
+    return await this.userService.getOne({
+      where: { id },
+      select: ['id', 'email', 'userName'],
+      relations: { guardians: true },
+    });
   }
 
   @Put(':id')
@@ -41,5 +49,10 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteUser(@Param('id') id: number) {
     await this.userService.deleteUser(id);
+  }
+
+  @Get('teste/oi')
+  async go(@Req() req: any) {
+    return req.user;
   }
 }
