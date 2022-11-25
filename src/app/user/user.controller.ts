@@ -31,28 +31,23 @@ export class UserController {
     return await this.userService.create(data);
   }
 
-  @Get(':id')
-  async findById(@Param('id') id: number) {
+  @Get('auth')
+  async findById(@Req() req: any) {
     return await this.userService.getOne({
-      where: { id },
+      where: { id: req.user.id },
       select: ['id', 'email', 'userName'],
       relations: { guardians: true },
     });
   }
 
-  @Put(':id')
-  async update(@Param('id') id: number, @Body() data: UpdateUserDTO) {
-    return await this.userService.update(id, data);
+  @Put('auth')
+  async update(@Req() req: any, @Body() data: UpdateUserDTO) {
+    return await this.userService.update(req.user.id, data);
   }
 
-  @Delete(':id')
+  @Delete('auth')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteUser(@Param('id') id: number) {
-    await this.userService.deleteUser(id);
-  }
-
-  @Get('teste/oi')
-  async go(@Req() req: any) {
-    return req.user;
+  async deleteUser(@Req() req: any) {
+    await this.userService.deleteUser(req.user.id);
   }
 }
