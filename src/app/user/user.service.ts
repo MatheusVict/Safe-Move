@@ -21,6 +21,7 @@ export class UserService {
   async getAllUsers() {
     return await this.userRepository.find({
       select: ['id', 'email', 'userName', 'guardians'],
+      relations: { guardians: true },
     });
   }
 
